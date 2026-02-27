@@ -44,12 +44,6 @@ function fish_greeting
         set time_icon ""
     end
 
-    # Windows Terminal renders NF PUA glyphs 2 columns wide; elsewhere 1
-    set -l _iadj 0
-    if set -q WT_SESSION
-        set _iadj 1
-    end
-
     # --- Narrative: greeting ---
     set -l greeting
     switch $period
@@ -134,7 +128,7 @@ function fish_greeting
     set -l header " $session_count · $period · $time_str"
     set -l max_len 0
     for line in $line1 $line2 $header
-        set -l len (math (printf '%s' "$line" | wc -m | string trim) + $_iadj)
+        set -l len (string length -- "$line")
         test $len -gt $max_len; and set max_len $len
     end
     set -l W (math "$max_len + 6")
@@ -145,7 +139,7 @@ function fish_greeting
     set -l rs (set_color normal)
 
     # Top border
-    set -l hpad (math "$W - "(math (printf '%s' "$header" | wc -m | string trim) + $_iadj)" - 4")
+    set -l hpad (math "$W - "(string length -- "$header")" - 4")
     test $hpad -lt 1; and set hpad 1
     echo -s $bc "╭── " $tx $header $bc " " (string repeat -n $hpad "─") "╮" $rs
 
@@ -153,12 +147,12 @@ function fish_greeting
     echo -s $bc "│" (string repeat -n $W " ") "│" $rs
 
     # Content (pad with spaces for reliable right border)
-    set -l len1 (math (printf '%s' "$line1" | wc -m | string trim) + $_iadj)
+    set -l len1 (string length -- "$line1")
     set -l pad1 (math "$W - 2 - $len1")
     test $pad1 -lt 0; and set pad1 0
     echo -s $bc "│" $tx "  " $line1 (string repeat -n $pad1 " ") $bc "│" $rs
 
-    set -l len2 (math (printf '%s' "$line2" | wc -m | string trim) + $_iadj)
+    set -l len2 (string length -- "$line2")
     set -l pad2 (math "$W - 2 - $len2")
     test $pad2 -lt 0; and set pad2 0
     echo -s $bc "│" $tx "  " $line2 (string repeat -n $pad2 " ") $bc "│" $rs
