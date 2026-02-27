@@ -25,23 +25,23 @@ function fish_greeting
     if test $hour -lt 6
         set border_color blue
         set period night
-        set time_icon ""
+        set time_icon ""
     else if test $hour -lt 12
         set border_color yellow
         set period morning
-        set time_icon ""
+        set time_icon ""
     else if test $hour -lt 17
         set border_color green
         set period afternoon
-        set time_icon ""
+        set time_icon ""
     else if test $hour -lt 21
         set border_color magenta
         set period evening
-        set time_icon ""
+        set time_icon ""
     else
         set border_color cyan
         set period night
-        set time_icon ""
+        set time_icon ""
     end
 
     # --- Narrative: greeting ---
